@@ -53,6 +53,26 @@ def student_added():
                             last=last, 
                             github=github)
 
+@app.route("/project")
+def display_project():
+    """Displays information about a project"""
+
+    title = request.args.get("title")
+    
+    # projects is a list with project_title, description, max_grade
+    projects = hackbright.get_project_by_title(title)
+
+    # student_grades is a list of tuples containing github account and 
+    # grade associated with that account
+    student_grades = hackbright.get_grades_by_title(title)
+    print student_grades
+
+
+    return render_template("project_info.html",
+                            title=title, 
+                            projects=projects,
+                            student_grades=student_grades)
+
 if __name__ == "__main__":
     hackbright.connect_to_db(app)
     app.run(debug=True)
